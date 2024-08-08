@@ -24,7 +24,7 @@ This section handles the core physics of the drones, ensuring realistic movement
 
 ---
 
-## 2. Swarm Models
+## 2. Swarm Models (Assets\Scripts\SwarmModels)
 
 Two swarm models have been implemented in this simulation, each with its own obstacle avoidance and target acquisition scripts. These scripts come with predefined coefficients that match each model's specific needs.
 
@@ -52,12 +52,12 @@ Key Parameters:
 
 ## 3. Graphs and Heat Maps
 
-### 3.1. Graphs
+### 3.1. Graphs (Assets\Scripts\Graphs)
 
 - **Data Storage**: Each drone logs its past states into the `variableManager` at a configurable frequency (set in `config.cs`).
 - **Plotting**: Data can be visualized using the `graphManager`, which utilizes sub-scripts like `Linechart` and `ULineRenderer` to draw on a canvas.
 
-### 3.2. Heat Maps
+### 3.2. Heat Maps (Assets\Scripts\HeatMap)
 
 - **Heatmap Generation**: A grid of cubes is spawned around the swarm center, colored based on heat (red = 1, blue = 0).
 - **Configuration**: The heatmap is updated at a configurable `refreshRate` (default: 0.2). Resolution can be enhanced by adjusting the spacing and radius.
