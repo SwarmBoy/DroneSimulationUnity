@@ -1,38 +1,75 @@
 # Unity Swarm Drones Simulator
 
-**A drone created for Unity with realistic drone physics, to find important features**
+**A drone simulator created for Unity with realistic drone physics, designed to explore and identify important features.**
 
+## Overview
 
-### Code Explanation
+This project consists of three main components:
 
-Code explanation:
+1. **Drone Physics**
+2. **Swarm Models**
+3. **Graphs and Heat Maps**
 
-There are 3 important parts in this project:
+Each section below provides a detailed explanation of these components.
 
-1) Drone Physics
-    https://github.com/UAVs-at-Berkeley/UnityDroneSim
-    PID to control velocity and position in height
-    The interactionHandler is here to access the correct part of the drone when applied a force for instance
-2) Swarm Model (Assets\Scripts\SwarmModels\)
-    There are 2 models created in this simulation both model has their own Obstacle avoidance and Target script that has predefined coefficient to match the model:
-        1) Reynold nodel based on 3 forces: Cohesion, Separation and alignement (Thoses parameters can be modified by changing the weights (higher the weight, higher importance to the force))
-        2) Olfti-Saber model, this model tries to keep the same distance between all the drones (Still figuring out the parameters reading the paper https://ieeexplore.ieee.org/abstract/document/1605401)
-        
-        r (float): distance between current drone and neighbour drone
-        d_ref (float): desired distance between members of the swarm
-        a (float): potential field parameter
-        b (float): potential field parameter
-        c (float): potential field parameter
-        r0 (float): minimum distance to be part of the swarm
-        delta (float): parameter for the neighbour weight
+---
 
-3) Graphs and HeatMap (Assets\Scripts\Graphs && Assets\Scripts\HeatMap)
-    1) Graphs (Assets\Scripts\Graphs)
-        Every drones keeps their past informations in the *variableManager* at a frequency defined in the config.cs file, thoses variables can be ploted using the *graphManager*. This script is using subscripts like Linechart and ULineRenderer that allows to draw on a canvas. 
-    2) Heat Map
-        The Heatmap is done by Spawning around the center of the swarm an array of cibes if differents heatmap color (red = 1 -- blue = 0 ) it is updated using the refreshRate (0.2 default) you can increase the resolution of the heatmap by reducing the spacing and the radius of the heatmap with the radius
+## 1. Drone Physics
 
-### Unity Editor
-    Every Main script are in the Gamemanger
-    Every drones are responsible for the behavior and saving their own data (will be changed). (You can find the drone in the swarmHolder)
+This section handles the core physics of the drones, ensuring realistic movement and control.
 
+- **Repository**: [UnityDroneSim](https://github.com/UAVs-at-Berkeley/UnityDroneSim)
+- **Control System**: Uses a PID controller to manage velocity and altitude.
+- **Interaction Handler**: Facilitates access to different parts of the drone when forces are applied.
+
+---
+
+## 2. Swarm Models
+
+Two swarm models have been implemented in this simulation, each with its own obstacle avoidance and target acquisition scripts. These scripts come with predefined coefficients that match each model's specific needs.
+
+### 2.1. Reynold's Model
+
+Based on three main forces:
+- **Cohesion**: Attraction between members of the swarm.
+- **Separation**: Avoidance of crowding neighbors.
+- **Alignment**: Steering towards the average heading of neighbors.
+
+These parameters can be adjusted by modifying their respective weights. Increasing the weight emphasizes the importance of that force.
+
+### 2.2. Olfati-Saber Model
+
+This model attempts to maintain a uniform distance between all drones. The parameters are still being fine-tuned according to the paper [Olfati-Saber](https://ieeexplore.ieee.org/abstract/document/1605401).
+
+Key Parameters:
+- `r (float)`: Distance between the current drone and its neighbor.
+- `d_ref (float)`: Desired distance between members of the swarm.
+- `a, b, c (float)`: Potential field parameters.
+- `r0 (float)`: Minimum distance to be part of the swarm.
+- `delta (float)`: Parameter for the neighbor weight.
+
+---
+
+## 3. Graphs and Heat Maps
+
+### 3.1. Graphs
+
+- **Data Storage**: Each drone logs its past states into the `variableManager` at a configurable frequency (set in `config.cs`).
+- **Plotting**: Data can be visualized using the `graphManager`, which utilizes sub-scripts like `Linechart` and `ULineRenderer` to draw on a canvas.
+
+### 3.2. Heat Maps
+
+- **Heatmap Generation**: A grid of cubes is spawned around the swarm center, colored based on heat (red = 1, blue = 0).
+- **Configuration**: The heatmap is updated at a configurable `refreshRate` (default: 0.2). Resolution can be enhanced by adjusting the spacing and radius.
+
+---
+
+## Unity Editor Setup
+
+1. **Main Scripts**: Located in the `GameManager`.
+2. **Drone Management**:
+    - Each drone is autonomous, responsible for its behavior and data logging.
+    - Drones are nested under `swarmHolder`. The "Drone Parent" is the core drone object where forces are applied. It contains a `RigidBody` and tracks the drone's true position.
+3. **Canvas**:
+    - Graphs are plotted here, with a dropdown menu available to select variables for plotting.
+    - Managed by the `GraphManager` script.
