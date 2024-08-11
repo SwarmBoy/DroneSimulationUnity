@@ -16,6 +16,8 @@ public class OlftaSaber : MonoBehaviour
     public float gamma = 1.0f;
     public float c_vm = 1.0f;
 
+    public float maxMigrationDistance = 10.0f;
+
 
     public float detectionRadius = 5.0f;  // Radius to detect obstacles
     public float obstacleAvoidanceForceWeight = 2.0f; // Weight for obstacle avoidance force
@@ -29,12 +31,13 @@ public class OlftaSaber : MonoBehaviour
         Vector3 accMig = Vector3.zero;
         Vector3 accVel = c_vm * (v_ref * droneRb.velocity.normalized - droneRb.velocity);
 
+        float radius = droneRb.gameObject.transform.parent.GetComponent<interactionHandler>().radiusOfCollider;
 
         // Calculate the cohesion force
         foreach (Transform neighbour in neighbourDrones)
         {
             Vector3 posRel = neighbour.position - droneRb.position;
-            float dist = posRel.magnitude;
+            float dist = posRel.magnitude - 2*radius;
 
             accCoh += GetCohesionForce(dist, d_ref, a, b, r0_coh, delta) * posRel.normalized;
         }
@@ -57,6 +60,7 @@ public class OlftaSaber : MonoBehaviour
 
         Vector3 avoidForce = Vector3.zero;
         Collider[] hitColliders = Physics.OverlapSphere(droneRB.transform.position, detectionRadius);
+        float radius = droneRB.gameObject.transform.parent.GetComponent<interactionHandler>().radiusOfCollider;
 
         foreach (var hitCollider in hitColliders)
         {
@@ -65,7 +69,8 @@ public class OlftaSaber : MonoBehaviour
                 // Find the closest point on the collider to the agent
                 Vector3 closestPoint = hitCollider.ClosestPoint(droneRB.transform.position);
                 Vector3 directionToObstacle = droneRB.transform.position - closestPoint;
-                float distanceToObstacle = directionToObstacle.magnitude;
+
+                float distanceToObstacle = directionToObstacle.magnitude-radius;
 
                 if (distanceToObstacle < detectionRadius && distanceToObstacle > 0)
                 {
@@ -140,7 +145,7 @@ public class OlftaSaber : MonoBehaviour
 
     private Vector3 GetMigrationForce(Vector3 p_mig, Vector3 p_i, float v_ref, Vector3 v_i, float gamma)
     {
-        float d = Vector3.Distance(p_mig, p_i);
+        float d = Mathf.Min(Vector3.Distance(p_mig, p_i), maxMigrationDistance);
         Vector3 u_i = (p_mig - p_i).normalized;
         return gamma * d * (v_ref * u_i - v_i);
     }

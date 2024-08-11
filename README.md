@@ -73,3 +73,8 @@ Key Parameters:
 3. **Canvas**:
     - Graphs are plotted here, with a dropdown menu available to select variables for plotting.
     - Managed by the `GraphManager` script.
+
+
+
+If you want to plot a new feature, you need to go into the variable Manager and create new variable in "variables" like shown in the script. This will automaticaly synchronize with the graph Mananger and you will be able to plot it on the canvas. Don't forget to add the list<Float> to genereate the JSON afterwards ;)
+ 

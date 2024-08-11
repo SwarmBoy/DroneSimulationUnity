@@ -67,8 +67,8 @@ public class HeatMap3D : MonoBehaviour
     {
         GameObject voxel = Instantiate(voxelPrefab, new Vector3(x, y , z ), Quaternion.identity);
         voxel.transform.parent = heatmapHolder;
-        voxel.transform.localScale = new Vector3(spacing, spacing, spacing);
-        voxel.GetComponent<Renderer>().material.color = Color.Lerp(Color.blue, Color.red, value); // Normalize value to [0, 1]
+        voxel.transform.localScale = new Vector3(spacing, 0.01f, spacing);
+        voxel.GetComponent<Renderer>().material.color = Color.Lerp(Color.green, Color.red, value); // Normalize value to [0, 1]
         voxel.GetComponent<Renderer>().material.SetFloat("_Transparency", 0.8f); // Adjust transparency
     }
 

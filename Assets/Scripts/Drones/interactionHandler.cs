@@ -5,6 +5,12 @@ using UnityEngine;
 public class interactionHandler : MonoBehaviour
 {
     public GameObject drone;
+    public float radiusOfCollider; 
+
+    public void Start()
+    {
+        radiusOfCollider = drone.GetComponent<SphereCollider>().radius;
+    }
     // Start is called before the first frame update
     public void applyForce(Vector3 force)
     {
